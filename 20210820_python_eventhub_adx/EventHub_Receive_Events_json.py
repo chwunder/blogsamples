@@ -6,12 +6,12 @@ import time
 import asyncio
 
 #variables to build connection
-ev_connstr = "Endpoint=sb://ehn1-chwunder.servicebus.windows.net/;SharedAccessKeyName=srm;SharedAccessKey=VvARWbTrmbexaGE194Ggc1783OExsgY/A19LdoBe8uA=;EntityPath=ehi1-chwunder"
-ev_name = "ehi1-chwunder"
+ev_connstr = ""
+ev_name = ""
 
-sa_connstr = "DefaultEndpointsProtocol=https;AccountName=ehi1checkpoint;AccountKey=zB+FziSwjxK4f6QB5ZdY3qcwUlGoBe0UQ5ZGYqEJnObgT+vmlizTs4SmxKSiHOpku6qI3XEGsTtxglS62zI7mQ==;EndpointSuffix=core.windows.net"
-sa_name = "ehi1checkpoint"
-sa_containername = "checkpoint"
+sa_connstr = ""
+sa_name = ""
+sa_containername = ""
 
 async def on_event(partition_context, event):
     print("{}".format(event.body_as_json(encoding='UTF-8')))

@@ -9,8 +9,8 @@ from datetime import datetime
 import random
 
 #variables to build connection
-ev_connstr = "Endpoint=sb://ehn1-chwunder.servicebus.windows.net/;SharedAccessKeyName=srm;SharedAccessKey=VvARWbTrmbexaGE194Ggc1783OExsgY/A19LdoBe8uA=;EntityPath=ehi1-chwunder"
-ev_name = "ehi1-chwunder"
+ev_connstr = ""
+ev_name = ""
 
 async def create_batch(producer):
     event_data_batch = await producer.create_batch()
