@@ -7,6 +7,8 @@ import asyncio
 import json
 from datetime import datetime
 import random
+import sched
+
 
 #variables to build connection
 ev_connstr = ""
@@ -15,12 +17,22 @@ ev_name = ""
 async def create_batch(producer):
     event_data_batch = await producer.create_batch()
     i = 0
-    while i <= 10:
+    while i <= 1000:
         device_id = random.randint(0,2)
-        json_obj = {"timestamp": str(datetime.utcnow()),"temperature": round(random.uniform(16.8,37.5),3), "iotdevice": "device"+str(device_id)}
+        json_obj = {
+            "timestamp": str(datetime.utcnow()),
+            "temperature": round(random.uniform(16.8,37.5),3),
+            "humidity": round(random.uniform(40.0,62.4),2),
+            "iotdevice": "device"+str(device_id)
+            }
         string = json.dumps(json_obj)
         Event_data = EventData(body=string)
-        Event_data.properties = {"table":"TestTable", "ingestionMappingReference":"TestMapping", "format":"json"}
+        Event_data.properties = {
+            "Table":"TestTable",
+            "IngestionMappingReference":"TestMapping", 
+            "Format":"json"
+            }
+        print(Event_data)
         event_data_batch.add(Event_data)
         i += 1
     print(event_data_batch)
@@ -33,4 +45,16 @@ async def send_batch():
     async with producer:
         await producer.send_batch(batch_data)
 
-asyncio.run(send_batch())
+
+s = sched.scheduler(time.time, time.sleep)
+def do_something(sc):
+    print("events send at:"+str(datetime.now()))
+    asyncio.run(send_batch())
+    s.enter(1, 1, do_something, (sc,))
+
+s.enter(1, 1, do_something, (s,))
+s.run()
+
+
+
+

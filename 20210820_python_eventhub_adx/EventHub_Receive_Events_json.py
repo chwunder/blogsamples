@@ -25,12 +25,9 @@ async def main():
     checkpoint_store = BlobCheckpointStore.from_connection_string(conn_str=sa_connstr, container_name=sa_containername)
 
     # Create a consumer client for the event hub.
-    client = EventHubConsumerClient.from_connection_string(conn_str=ev_connstr, consumer_group="$Default", eventhub_name=ev_name, checkpoint_store=checkpoint_store)
+    client = EventHubConsumerClient.from_connection_string(conn_str=ev_connstr, consumer_group="ADXConsumerGroup", eventhub_name=ev_name, checkpoint_store=checkpoint_store)
     async with client:
         # Call the receive method. Read from the beginning of the partition (starting_position: "-1")
         await client.receive(on_event=on_event, track_last_enqueued_event_properties=True,  starting_position="-1")
 
-if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    # Run the main method.
-    loop.run_until_complete(main())
+asyncio.run(main())
